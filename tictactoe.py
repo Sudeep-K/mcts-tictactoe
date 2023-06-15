@@ -40,6 +40,96 @@ class Board():
 
         # return new board state
         return board
+    
+    # check if game is draw
+    def is_draw(self):
+        # loop over board squares
+        for row, col in self.position:
+            # empty square is available
+            if self.position[row, col] == self.empty_space:
+                # this is not a draw
+                return False 
+        
+        # by default we return a draw
+        return True
+    
+    # check if game is won
+    def is_win(self):
+        #############################
+        # vertical square detection #
+        #############################
+
+        # loop over board columns
+        for col in range(3):
+            winning_sequence = []
+            # check if all squares in a column are the same
+            for row in range(3):
+                if self.position[row, col] == self.player_2:
+                    winning_sequence.append((row, col))
+            
+            # if there are three elements in sequence
+            if len(winning_sequence) == 3:
+                # return game is won
+                return True
+            
+        #############################
+        # horizontal square detection #
+        #############################
+
+        # loop over board rows
+        for row in range(3):
+            winning_sequence = []
+            # check if all squares in a row are the same
+            for col in range(3):
+                if self.position[row, col] == self.player_2:
+                    winning_sequence.append((row, col))
+            
+            # if there are three elements in sequence
+            if len(winning_sequence) == 3:
+                # return game is won
+                return True
+            
+        #############################
+        # first diagonal detection #
+        #############################
+
+        # init winning sequence
+        winning_sequence = []
+
+        # loop over board rows
+        for row in range(3):
+            # init column
+            col = row
+
+            # if found same next element in row
+            if self.position[row, col] == self.player_2:
+                winning_sequence.append((row, col))
+            
+            # if there are three elements in sequence
+            if len(winning_sequence) == 3:
+                # return game is won
+                return True
+            
+        #############################
+        # second diagonal detection #
+        #############################
+
+        # init winning sequence
+        winning_sequence = []
+        
+        # loop over board rows
+        for row in range(3):
+            # init column
+            col = 3 - row - 1
+
+            # if found same next element in row
+            if self.position[row, col] == self.player_2:
+                winning_sequence.append((row, col))
+            
+            # if there are three elements in sequence
+            if len(winning_sequence) == 3:
+                # return game is won
+                return True
 
     # print board state
     def __str__(self):
@@ -69,8 +159,12 @@ if __name__ == '__main__':
     # create board instance
     board = Board()
 
-    board.position[0, 0] = 'x'
-    print(board)
+    board.position = {
+        (0, 0): 'o', (0, 1): 'x', (0, 2): 'o',
+        (1, 0): 'x', (1, 1): 'o', (1, 2): 'x',
+        (2, 0): 'x', (2, 1): 'o', (2, 2): 'x',
+    }
 
-    board_clone = Board(board)
-    print(board_clone)
+    print(board)
+    print('player 2: "%s"' %board.player_2)
+    print('Win status', board.is_win())

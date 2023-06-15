@@ -148,6 +148,58 @@ class Board():
         # return available actions
         return actions
     
+    # main game loop
+    def game_loop(self):
+        print('\n Tic Tac Toe Game Implementation using MCTS \n')
+        print(' Type "exit" to quit the game ')
+        print(' Move format [x, y]: 1,2 where 1 is the row and 2 is the column ')
+
+        # print board
+        print(self)
+
+        # loop over game moves
+        while True:
+            # user input
+            user_input = input('> ')
+
+            # check if user wants to quit
+            if user_input == 'exit':
+                break
+
+            # skip empty prompt
+            if user_input == '':
+                continue
+            
+            try: 
+                # parse user input (move format [row, col] = 1,2)
+                row = int(user_input.split(',')[0]) - 1
+                col = int(user_input.split(',')[1]) - 1
+
+                # check move legality
+                if self.position[row, col] != self.empty_space:
+                    raise Exception('Illegal move!')
+                
+                # make move on board
+                self = self.make_move(row, col)
+
+                # print board
+                print(self)
+
+                # check if game is won
+                if self.is_win():
+                    print('%s won!'%self.player_2)
+                    break
+
+                # check if game is draw
+                elif self.is_draw():
+                    print(' The Game is Draw! ')
+                    break
+
+            except Exception as e:
+                print('Error: ', e)
+                print('Illegal move!')
+                print(' Move format [x, y]: 1,2 where 1 is the row and 2 is the column ')
+    
     # print board state
     def __str__(self):
         # define board string representation
@@ -176,12 +228,14 @@ if __name__ == '__main__':
     # create board instance
     board = Board()
 
-    board.position = {
-        (0, 0): 'o', (0, 1): 'x', (0, 2): 'o',
-        (1, 0): 'x', (1, 1): 'o', (1, 2): 'x',
-        (2, 0): 'x', (2, 1): 'o', (2, 2): 'x',
-    }
+    # board.position = {
+    #     (0, 0): 'o', (0, 1): 'x', (0, 2): 'o',
+    #     (1, 0): 'x', (1, 1): 'o', (1, 2): 'x',
+    #     (2, 0): 'x', (2, 1): 'o', (2, 2): 'x',
+    # }
 
-    print(board)
-    print('player 2: "%s"' %board.player_2)
-    print('Win status', board.is_win())
+    # print(board)
+    # print('player 2: "%s"' %board.player_2)
+    # print('Win status', board.is_win())
+
+    board.game_loop()

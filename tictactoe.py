@@ -130,7 +130,24 @@ class Board():
             if len(winning_sequence) == 3:
                 # return game is won
                 return True
+            
+    # generate legal moves to play in the current position
+    def generate_states(self):
+        # define states list (moves list - list of available actions to consider)
+        actions = []
 
+        # loop over board rows
+        for row in range(3):
+            # loop over board columns
+            for col in range(3):
+                # make sure that current square is empty
+                if self.position[row, col] == self.empty_space:
+                    # add available action to action list
+                    actions.append(self.make_move(row, col))
+
+        # return available actions
+        return actions
+    
     # print board state
     def __str__(self):
         # define board string representation

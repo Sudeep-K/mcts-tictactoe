@@ -1,4 +1,5 @@
 from copy import deepcopy
+from mcts import *
 
 class Board():
     # create constructor (init board class instance)
@@ -157,6 +158,9 @@ class Board():
         # print board
         print(self)
 
+        # create MCTS instance
+        mcts = MCTS()
+
         # loop over game moves
         while True:
             # user input
@@ -181,6 +185,18 @@ class Board():
                 
                 # make move on board
                 self = self.make_move(row, col)
+                
+                # make ai move here
+                best_move = mcts.search(self)
+                
+                 # legal moves available
+                try:
+                    # make AI move here
+                    self = best_move.board
+                
+                # game over
+                except:
+                    pass
 
                 # print board
                 print(self)
@@ -228,14 +244,5 @@ if __name__ == '__main__':
     # create board instance
     board = Board()
 
-    # board.position = {
-    #     (0, 0): 'o', (0, 1): 'x', (0, 2): 'o',
-    #     (1, 0): 'x', (1, 1): 'o', (1, 2): 'x',
-    #     (2, 0): 'x', (2, 1): 'o', (2, 2): 'x',
-    # }
-
-    # print(board)
-    # print('player 2: "%s"' %board.player_2)
-    # print('Win status', board.is_win())
-
+    # start game loop
     board.game_loop()
